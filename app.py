@@ -24,29 +24,42 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for professional styling
+# Custom CSS for professional styling - LIGHT THEME
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     
+    /* Light theme colors */
     :root {
         --primary: #2563eb;
         --primary-dark: #1d4ed8;
         --secondary: #f59e0b;
-        --bg-dark: #0f172a;
-        --bg-card: #1e293b;
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --border: #334155;
+        --bg-main: #ffffff;
+        --bg-card: #f8fafc;
+        --bg-sidebar: #f1f5f9;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --border: #e2e8f0;
         --success: #10b981;
         --warning: #f59e0b;
         --danger: #ef4444;
     }
     
+    /* Main app background */
     .stApp {
-        background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        background: var(--bg-main);
     }
     
+    /* Sidebar styling */
+    section[data-testid="stSidebar"] {
+        background: var(--bg-sidebar);
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown {
+        color: var(--text-primary);
+    }
+    
+    /* Header styling */
     .main-header {
         background: linear-gradient(90deg, var(--primary) 0%, #7c3aed 100%);
         -webkit-background-clip: text;
@@ -64,6 +77,62 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
+    /* Text input styling - FIXED FOR VISIBILITY */
+    .stTextInput > div > div > input {
+        background: var(--bg-main) !important;
+        border: 2px solid var(--border) !important;
+        color: var(--text-primary) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        border-radius: 8px;
+        padding: 12px;
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    /* Text area styling - FIXED FOR VISIBILITY */
+    .stTextArea > div > div > textarea {
+        background: var(--bg-main) !important;
+        border: 2px solid var(--border) !important;
+        color: var(--text-primary) !important;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .stTextArea > div > div > textarea:focus {
+        border-color: var(--primary) !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    
+    /* Selectbox styling */
+    .stSelectbox > div > div {
+        background: var(--bg-main);
+        border: 2px solid var(--border);
+        border-radius: 8px;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(90deg, var(--primary) 0%, #7c3aed 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        transition: all 0.2s ease;
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    
+    /* Card styling */
     .metric-card {
         background: var(--bg-card);
         border: 1px solid var(--border);
@@ -72,105 +141,45 @@ st.markdown("""
         margin-bottom: 1rem;
     }
     
-    .query-type-badge {
-        display: inline-block;
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    
-    .badge-related { background: #3b82f6; color: white; }
-    .badge-implicit { background: #8b5cf6; color: white; }
-    .badge-comparative { background: #f59e0b; color: black; }
-    .badge-reformulation { background: #10b981; color: white; }
-    .badge-entity { background: #ec4899; color: white; }
-    .badge-personalized { background: #06b6d4; color: black; }
-    
-    .stTextInput > div > div > input {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        color: var(--text-primary);
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    .stTextArea > div > div > textarea {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        color: var(--text-primary);
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    .stSelectbox > div > div {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-    }
-    
-    .result-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1rem;
-        margin-bottom: 0.75rem;
-        transition: all 0.2s ease;
-    }
-    
-    .result-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-2px);
-    }
-    
-    .intent-tag {
-        background: rgba(37, 99, 235, 0.2);
-        color: var(--primary);
-        padding: 0.2rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.7rem;
-        font-weight: 500;
-    }
-    
-    .reasoning-text {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        font-style: italic;
-        margin-top: 0.5rem;
-    }
-    
-    .stats-container {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    
-    .stat-box {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1.25rem;
-        text-align: center;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-    }
-    
-    .stat-label {
-        color: var(--text-secondary);
-        font-size: 0.85rem;
-        margin-top: 0.25rem;
-    }
-    
+    /* Expander styling */
     div[data-testid="stExpander"] {
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 12px;
     }
     
+    div[data-testid="stExpander"] details summary {
+        color: var(--text-primary);
+    }
+    
+    /* Tabs styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: var(--bg-card);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        border: 1px solid var(--border);
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background: var(--primary) !important;
+        color: white !important;
+    }
+    
+    /* Metric styling */
+    [data-testid="stMetricValue"] {
+        color: var(--primary);
+        font-weight: 700;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: var(--text-secondary);
+    }
+    
+    /* Footer styling */
     .footer {
         text-align: center;
         color: var(--text-secondary);
@@ -178,6 +187,41 @@ st.markdown("""
         margin-top: 3rem;
         padding: 2rem 0;
         border-top: 1px solid var(--border);
+    }
+    
+    /* Quick example buttons */
+    .stButton > button[kind="secondary"] {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+    
+    /* Download buttons */
+    .stDownloadButton > button {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        border: 1px solid var(--border);
+    }
+    
+    .stDownloadButton > button:hover {
+        background: var(--primary);
+        color: white;
+    }
+    
+    /* Info/Warning/Error boxes */
+    .stAlert {
+        border-radius: 8px;
+    }
+    
+    /* Markdown text */
+    .stMarkdown {
+        color: var(--text-primary);
+    }
+    
+    /* Labels */
+    .stTextInput label, .stTextArea label, .stSelectbox label {
+        color: var(--text-primary) !important;
+        font-weight: 500;
     }
 </style>
 """, unsafe_allow_html=True)
