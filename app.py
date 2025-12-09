@@ -4,6 +4,12 @@ YEA Business Query Fan-Out Tool
 A comprehensive query fan-out simulation tool for AEO (Answer Engine Optimization)
 Based on Google's AI Mode patents and methodology.
 
+Features:
+- Light/White Theme for better visibility
+- Full Data Export with table view
+- Content Format Mapping
+- CSV/JSON/Google Sheets export
+
 Built for YEA Business - Digital Marketing & Video Production
 """
 
@@ -24,14 +30,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for professional styling - LIGHT THEME
+# Custom CSS - LIGHT/WHITE THEME
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     
-    /* Light theme colors */
+    /* ========== LIGHT THEME COLORS ========== */
     :root {
         --primary: #2563eb;
+        --primary-light: #3b82f6;
         --primary-dark: #1d4ed8;
         --secondary: #f59e0b;
         --bg-main: #ffffff;
@@ -39,29 +46,48 @@ st.markdown("""
         --bg-sidebar: #f1f5f9;
         --text-primary: #1e293b;
         --text-secondary: #64748b;
+        --text-muted: #94a3b8;
         --border: #e2e8f0;
+        --border-light: #f1f5f9;
         --success: #10b981;
         --warning: #f59e0b;
         --danger: #ef4444;
+        --purple: #8b5cf6;
+        --pink: #ec4899;
+        --cyan: #06b6d4;
     }
     
-    /* Main app background */
+    /* ========== MAIN APP ========== */
     .stApp {
         background: var(--bg-main);
     }
     
-    /* Sidebar styling */
+    /* ========== SIDEBAR ========== */
     section[data-testid="stSidebar"] {
         background: var(--bg-sidebar);
+        border-right: 1px solid var(--border);
     }
     
     section[data-testid="stSidebar"] .stMarkdown {
         color: var(--text-primary);
     }
     
-    /* Header styling */
+    section[data-testid="stSidebar"] .stMarkdown h3 {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown p {
+        color: var(--text-secondary);
+    }
+    
+    section[data-testid="stSidebar"] .stMarkdown li {
+        color: var(--text-secondary);
+    }
+    
+    /* ========== HEADERS ========== */
     .main-header {
-        background: linear-gradient(90deg, var(--primary) 0%, #7c3aed 100%);
+        background: linear-gradient(90deg, var(--primary) 0%, var(--purple) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -77,91 +103,119 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* Text input styling - FIXED FOR VISIBILITY */
+    /* ========== TEXT INPUT - VERY IMPORTANT FOR VISIBILITY ========== */
     .stTextInput > div > div > input {
         background: var(--bg-main) !important;
         border: 2px solid var(--border) !important;
         color: var(--text-primary) !important;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        border-radius: 8px;
-        padding: 12px;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        font-size: 16px !important;
     }
     
     .stTextInput > div > div > input:focus {
         border-color: var(--primary) !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
     }
     
-    /* Text area styling - FIXED FOR VISIBILITY */
+    .stTextInput > div > div > input::placeholder {
+        color: var(--text-muted) !important;
+    }
+    
+    /* ========== TEXT AREA - VERY IMPORTANT FOR VISIBILITY ========== */
     .stTextArea > div > div > textarea {
         background: var(--bg-main) !important;
         border: 2px solid var(--border) !important;
         color: var(--text-primary) !important;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        border-radius: 8px;
-        padding: 12px;
-        font-size: 16px;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        border-radius: 8px !important;
+        padding: 12px !important;
+        font-size: 16px !important;
+        line-height: 1.5 !important;
     }
     
     .stTextArea > div > div > textarea:focus {
         border-color: var(--primary) !important;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
     }
     
-    /* Selectbox styling */
+    .stTextArea > div > div > textarea::placeholder {
+        color: var(--text-muted) !important;
+    }
+    
+    /* ========== SELECT BOX ========== */
     .stSelectbox > div > div {
-        background: var(--bg-main);
-        border: 2px solid var(--border);
-        border-radius: 8px;
+        background: var(--bg-main) !important;
+        border: 2px solid var(--border) !important;
+        border-radius: 8px !important;
     }
     
-    /* Button styling */
+    .stSelectbox > div > div > div {
+        color: var(--text-primary) !important;
+    }
+    
+    /* ========== LABELS ========== */
+    .stTextInput label, .stTextArea label, .stSelectbox label {
+        color: var(--text-primary) !important;
+        font-weight: 500 !important;
+        font-size: 14px !important;
+    }
+    
+    /* ========== BUTTONS ========== */
     .stButton > button {
-        background: linear-gradient(90deg, var(--primary) 0%, #7c3aed 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 12px 24px;
-        font-weight: 600;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        transition: all 0.2s ease;
+        background: linear-gradient(90deg, var(--primary) 0%, var(--purple) 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 12px 24px !important;
+        font-weight: 600 !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        transition: all 0.2s ease !important;
     }
     
     .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
     
-    /* Card styling */
-    .metric-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
+    /* Secondary buttons (example buttons) */
+    .stButton > button[kind="secondary"] {
+        background: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
     }
     
-    /* Expander styling */
-    div[data-testid="stExpander"] {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
+    /* Download buttons */
+    .stDownloadButton > button {
+        background: var(--bg-card) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
     }
     
-    div[data-testid="stExpander"] details summary {
-        color: var(--text-primary);
+    .stDownloadButton > button:hover {
+        background: var(--primary) !important;
+        color: white !important;
+        border-color: var(--primary) !important;
     }
     
-    /* Tabs styling */
+    /* ========== TABS ========== */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
+        background: var(--bg-card);
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
     }
     
     .stTabs [data-baseweb="tab"] {
-        background: var(--bg-card);
+        background: transparent;
         border-radius: 8px;
         color: var(--text-secondary);
-        border: 1px solid var(--border);
+        padding: 10px 20px;
+        font-weight: 500;
     }
     
     .stTabs [aria-selected="true"] {
@@ -169,17 +223,87 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Metric styling */
-    [data-testid="stMetricValue"] {
+    /* ========== EXPANDERS ========== */
+    div[data-testid="stExpander"] {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    div[data-testid="stExpander"] details summary {
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    
+    div[data-testid="stExpander"] details summary:hover {
         color: var(--primary);
-        font-weight: 700;
+    }
+    
+    /* ========== METRICS ========== */
+    [data-testid="stMetricValue"] {
+        color: var(--primary) !important;
+        font-weight: 700 !important;
+        font-size: 2rem !important;
     }
     
     [data-testid="stMetricLabel"] {
-        color: var(--text-secondary);
+        color: var(--text-secondary) !important;
+        font-weight: 500 !important;
     }
     
-    /* Footer styling */
+    /* ========== DATAFRAME/TABLE ========== */
+    .stDataFrame {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    
+    /* ========== ALERTS ========== */
+    .stAlert {
+        border-radius: 8px;
+    }
+    
+    /* ========== MARKDOWN TEXT ========== */
+    .stMarkdown {
+        color: var(--text-primary);
+    }
+    
+    .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+        color: var(--text-primary);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    .stMarkdown p {
+        color: var(--text-primary);
+        line-height: 1.6;
+    }
+    
+    .stMarkdown li {
+        color: var(--text-primary);
+    }
+    
+    .stMarkdown code {
+        background: var(--bg-card);
+        color: var(--primary);
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+    
+    /* ========== BAR CHART ========== */
+    .stBarChart {
+        background: var(--bg-card);
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid var(--border);
+    }
+    
+    /* ========== SPINNER ========== */
+    .stSpinner > div {
+        border-color: var(--primary) !important;
+    }
+    
+    /* ========== FOOTER ========== */
     .footer {
         text-align: center;
         color: var(--text-secondary);
@@ -189,46 +313,38 @@ st.markdown("""
         border-top: 1px solid var(--border);
     }
     
-    /* Quick example buttons */
-    .stButton > button[kind="secondary"] {
+    .footer strong {
+        color: var(--text-primary);
+    }
+    
+    /* ========== CUSTOM CARDS ========== */
+    .metric-card {
         background: var(--bg-card);
-        color: var(--text-primary);
         border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1rem;
     }
     
-    /* Download buttons */
-    .stDownloadButton > button {
+    .result-card {
         background: var(--bg-card);
-        color: var(--text-primary);
         border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        transition: all 0.2s ease;
     }
     
-    .stDownloadButton > button:hover {
-        background: var(--primary);
-        color: white;
-    }
-    
-    /* Info/Warning/Error boxes */
-    .stAlert {
-        border-radius: 8px;
-    }
-    
-    /* Markdown text */
-    .stMarkdown {
-        color: var(--text-primary);
-    }
-    
-    /* Labels */
-    .stTextInput label, .stTextArea label, .stSelectbox label {
-        color: var(--text-primary) !important;
-        font-weight: 500;
+    .result-card:hover {
+        border-color: var(--primary);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 </style>
 """, unsafe_allow_html=True)
 
 
 # ============================================================================
-# CORE PROMPTS (Based on Google Patents)
+# CORE PROMPTS (Based on Google Patents) - WITH CONTENT FORMAT
 # ============================================================================
 
 QUERY_FANOUT_PROMPT_TEMPLATE = """
@@ -274,28 +390,44 @@ First, analyze the query step by step:
 Generate synthetic queries across these categories (based on Google patents):
 
 1. **RELATED** - Semantically or categorically adjacent queries linked via entity relationships or taxonomy
-   - Trigger: Co-occurrence patterns, topical proximity in Knowledge Graph
    - Example: "best electric SUV" → "top rated electric crossovers"
 
 2. **IMPLICIT** - Queries inferred from user intent that they didn't explicitly state
-   - Trigger: LLM inference from phrasing, ambiguity, user behavior
    - Example: "best electric SUV" → "EVs with longest range"
 
 3. **COMPARATIVE** - Queries that compare products, entities, or options
-   - Trigger: Decision-making or choice scenarios
    - Example: "best electric SUV" → "Rivian R1S vs Tesla Model X"
 
 4. **REFORMULATION** - Lexical/syntactic rewrites maintaining core intent
-   - Trigger: Standard query expansion
    - Example: "best electric SUV" → "which electric SUV is best"
 
 5. **ENTITY_EXPANDED** - Queries using Knowledge Graph entity relationships
-   - Trigger: Entity crosswalks to broader/narrower equivalents
    - Example: "best electric SUV" → "Model Y reviews", "Hyundai Ioniq 5 specs"
 
 6. **PERSONALIZED** - Queries aligned to location, user context, or specific constraints
-   - Trigger: Location, time, or demographic signals
    - Example: "best electric SUV" → "EVs eligible for Malaysia rebate"
+
+## INTENT CATEGORIES
+
+Classify each query into one of these intents:
+- **NAVIGATIONAL** - Looking for specific website/location
+- **INFORMATIONAL** - Seeking knowledge/understanding
+- **TRANSACTIONAL** - Ready to take action/purchase
+- **COMPARATIVE** - Comparing options
+- **EXPLORATORY** - Research phase, open-minded
+
+## CONTENT FORMAT MAPPING
+
+For each query, suggest the best content format for AEO teams:
+- **BLOG_POST** - Deep dive educational article
+- **FAQ_PAGE** - Quick answers to common questions
+- **LANDING_PAGE** - Conversion-focused service page
+- **COMPARISON_TABLE** - Side-by-side comparison content
+- **VIDEO_CONTENT** - Explainer or testimonial video
+- **TESTIMONIAL_PAGE** - Reviews and social proof
+- **LOCAL_PAGE** - Location-specific content
+- **HOW_TO_GUIDE** - Step-by-step tutorial
+- **CASE_STUDY** - Success story with data
 
 ## OUTPUT REQUIREMENTS
 
@@ -305,7 +437,8 @@ Generate a JSON array with this EXACT structure:
     {{
         "query": "the synthetic query text",
         "type": "RELATED|IMPLICIT|COMPARATIVE|REFORMULATION|ENTITY_EXPANDED|PERSONALIZED",
-        "intent": "informational|transactional|navigational|comparative|exploratory",
+        "intent": "NAVIGATIONAL|INFORMATIONAL|TRANSACTIONAL|COMPARATIVE|EXPLORATORY",
+        "content_format": "BLOG_POST|FAQ_PAGE|LANDING_PAGE|COMPARISON_TABLE|VIDEO_CONTENT|TESTIMONIAL_PAGE|LOCAL_PAGE|HOW_TO_GUIDE|CASE_STUDY",
         "reasoning": "Brief explanation of why Google would generate this query",
         "priority": "high|medium|low"
     }}
@@ -538,29 +671,33 @@ def analyze_content_coverage(content: str, queries: List[Dict]) -> Dict:
         }
 
 
-def get_query_type_color(query_type: str) -> str:
-    """Get badge color for query type."""
-    colors = {
-        "RELATED": "#3b82f6",
-        "IMPLICIT": "#8b5cf6",
-        "COMPARATIVE": "#f59e0b",
-        "REFORMULATION": "#10b981",
-        "ENTITY_EXPANDED": "#ec4899",
-        "PERSONALIZED": "#06b6d4"
+def get_format_emoji(format_type: str) -> str:
+    """Get emoji for content format."""
+    emojis = {
+        "BLOG_POST": "📝",
+        "FAQ_PAGE": "❓",
+        "LANDING_PAGE": "🎯",
+        "COMPARISON_TABLE": "⚖️",
+        "VIDEO_CONTENT": "🎬",
+        "TESTIMONIAL_PAGE": "⭐",
+        "LOCAL_PAGE": "📍",
+        "HOW_TO_GUIDE": "📋",
+        "CASE_STUDY": "📊",
+        "INFOGRAPHIC": "📈"
     }
-    return colors.get(query_type, "#6b7280")
+    return emojis.get(format_type, "📄")
 
 
-def get_intent_color(intent: str) -> str:
-    """Get color for intent type."""
-    colors = {
-        "informational": "#3b82f6",
-        "transactional": "#10b981",
-        "navigational": "#f59e0b",
-        "comparative": "#8b5cf6",
-        "exploratory": "#ec4899"
+def get_intent_emoji(intent: str) -> str:
+    """Get emoji for intent."""
+    emojis = {
+        "NAVIGATIONAL": "🧭",
+        "INFORMATIONAL": "💡",
+        "TRANSACTIONAL": "💰",
+        "COMPARATIVE": "⚖️",
+        "EXPLORATORY": "🔍"
     }
-    return colors.get(intent.lower(), "#6b7280")
+    return emojis.get(intent.upper(), "❓")
 
 
 # ============================================================================
@@ -623,7 +760,7 @@ def main():
         """)
     
     # Main content area
-    tabs = st.tabs(["🔍 Query Fan-Out", "📊 Content Analysis", "📈 Results History"])
+    tabs = st.tabs(["🔍 Query Fan-Out", "📊 Content Analysis", "📋 Full Data Export"])
     
     # Tab 1: Query Fan-Out
     with tabs[0]:
@@ -632,7 +769,7 @@ def main():
         with col1:
             query = st.text_area(
                 "Enter your target query",
-                placeholder="e.g., best digital marketing agency in Malaysia",
+                placeholder="e.g., TCM Johor Bahru, best digital marketing agency Malaysia",
                 height=100,
                 help="Enter the main query you want to analyze for fan-out"
             )
@@ -640,10 +777,10 @@ def main():
         with col2:
             st.markdown("### Quick Examples")
             example_queries = [
+                "TCM Johor Bahru",
                 "best SEO agency Malaysia",
                 "video production company Singapore",
-                "AI marketing tools for small business",
-                "how to improve website ranking"
+                "AI marketing tools for small business"
             ]
             for eq in example_queries:
                 if st.button(eq, key=f"ex_{eq}"):
@@ -682,7 +819,7 @@ def main():
                         if result["success"]:
                             st.session_state['last_result'] = result
                             st.session_state['last_query'] = query
-                            st.success(f"Generated {result['total_count']} synthetic queries!")
+                            st.success(f"✅ Generated {result['total_count']} synthetic queries!")
                         else:
                             st.error(f"Error: {result.get('error', 'Unknown error')}")
         
@@ -712,7 +849,11 @@ def main():
                 st.metric("High Priority", high_priority)
             
             with col4:
-                st.metric("Mode", "AI Mode" if "ai_mode" in str(mode).lower() else "Overview")
+                intent_counts = {}
+                for q in queries:
+                    intent = q.get('intent', 'OTHER')
+                    intent_counts[intent] = intent_counts.get(intent, 0) + 1
+                st.metric("Intent Types", len(intent_counts))
             
             # Query type distribution
             st.markdown("### 📈 Query Type Distribution")
@@ -725,51 +866,31 @@ def main():
                 df_types = pd.DataFrame(type_data)
                 st.bar_chart(df_types.set_index('Type'))
             
-            # Display queries
-            st.markdown("### 🔍 Generated Queries")
+            # Display queries by intent
+            st.markdown("### 🔍 Queries by Intent")
             
-            # Filter options
-            col1, col2 = st.columns(2)
-            with col1:
-                filter_type = st.multiselect(
-                    "Filter by Type",
-                    options=list(type_counts.keys()),
-                    default=list(type_counts.keys())
-                )
-            with col2:
-                filter_priority = st.multiselect(
-                    "Filter by Priority",
-                    options=["high", "medium", "low"],
-                    default=["high", "medium", "low"]
-                )
-            
-            # Display filtered queries
-            for i, q in enumerate(queries):
-                qtype = q.get('type', 'OTHER')
-                priority = q.get('priority', 'medium')
-                
-                if qtype not in filter_type or priority not in filter_priority:
-                    continue
-                
-                with st.expander(f"**{q.get('query', 'N/A')}**", expanded=(priority == 'high' and i < 5)):
-                    col1, col2, col3 = st.columns([2, 1, 1])
-                    
-                    with col1:
-                        st.markdown(f"**Type:** `{qtype}`")
-                    with col2:
-                        st.markdown(f"**Intent:** `{q.get('intent', 'N/A')}`")
-                    with col3:
+            for intent in sorted(intent_counts.keys()):
+                intent_queries = [q for q in queries if q.get('intent', '').upper() == intent.upper()]
+                with st.expander(f"{get_intent_emoji(intent)} {intent} ({len(intent_queries)} queries)", expanded=False):
+                    for q in intent_queries:
+                        fmt = q.get('content_format', 'BLOG_POST')
+                        priority = q.get('priority', 'medium')
                         priority_emoji = {"high": "🔴", "medium": "🟡", "low": "🟢"}.get(priority, "⚪")
-                        st.markdown(f"**Priority:** {priority_emoji} {priority}")
-                    
-                    st.markdown(f"**Reasoning:** {q.get('reasoning', 'N/A')}")
+                        
+                        st.markdown(f"""
+                        **{q.get('query', '')}**  
+                        {priority_emoji} {priority.upper()} | {get_format_emoji(fmt)} {fmt} | `{q.get('type', '')}`  
+                        _{q.get('reasoning', '')}_
+                        """)
+                        st.markdown("---")
             
             # Additional insights
-            if result.get('count_reasoning'):
+            if result.get('count_reasoning') or result.get('themes') or result.get('gaps'):
                 st.markdown("### 💡 Analysis Insights")
                 
-                with st.expander("Query Count Reasoning"):
-                    st.markdown(result['count_reasoning'])
+                if result.get('count_reasoning'):
+                    with st.expander("Query Count Reasoning"):
+                        st.markdown(result['count_reasoning'])
                 
                 if result.get('themes'):
                     with st.expander("Key Themes Identified"):
@@ -778,78 +899,6 @@ def main():
                 if result.get('gaps'):
                     with st.expander("Content Gap Analysis"):
                         st.markdown(result['gaps'])
-            
-            # Export options
-            st.markdown("### 📥 Export Results")
-            
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                df = pd.DataFrame(queries)
-                csv = df.to_csv(index=False)
-                st.download_button(
-                    "📄 Download CSV",
-                    csv,
-                    f"fanout_queries_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-                    "text/csv",
-                    use_container_width=True
-                )
-            
-            with col2:
-                json_str = json.dumps(result, indent=2, ensure_ascii=False)
-                st.download_button(
-                    "📋 Download JSON",
-                    json_str,
-                    f"fanout_full_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
-                    "application/json",
-                    use_container_width=True
-                )
-            
-            with col3:
-                # Generate markdown report
-                md_report = f"""# Query Fan-Out Analysis Report
-
-## Original Query
-{st.session_state.get('last_query', 'N/A')}
-
-## Analysis Settings
-- Mode: {mode}
-- Language: {language}
-- Market: {market}
-- Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-
-## Summary
-- Total Queries: {result['total_count']}
-- Query Types: {len(type_counts)}
-
-## Query Type Distribution
-{chr(10).join([f"- {t}: {c}" for t, c in type_counts.items()])}
-
-## Generated Queries
-
-{chr(10).join([f"### {i+1}. {q.get('query', 'N/A')}{chr(10)}- Type: {q.get('type', 'N/A')}{chr(10)}- Intent: {q.get('intent', 'N/A')}{chr(10)}- Priority: {q.get('priority', 'N/A')}{chr(10)}- Reasoning: {q.get('reasoning', 'N/A')}{chr(10)}" for i, q in enumerate(queries)])}
-
-## Insights
-
-### Count Reasoning
-{result.get('count_reasoning', 'N/A')}
-
-### Key Themes
-{result.get('themes', 'N/A')}
-
-### Content Gaps
-{result.get('gaps', 'N/A')}
-
----
-Generated by YEA Query Fan-Out Tool
-"""
-                st.download_button(
-                    "📝 Download Report",
-                    md_report,
-                    f"fanout_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
-                    "text/markdown",
-                    use_container_width=True
-                )
     
     # Tab 2: Content Analysis
     with tabs[1]:
@@ -894,11 +943,11 @@ Generated by YEA Query Fan-Out Tool
             with col1:
                 st.metric("Average Score", f"{stats['average_score']}%")
             with col2:
-                st.metric("Covered", stats['covered'], help="Queries well-covered by content")
+                st.metric("✅ Covered", stats['covered'])
             with col3:
-                st.metric("Partial", stats['partial'], help="Queries partially covered")
+                st.metric("⚠️ Partial", stats['partial'])
             with col4:
-                st.metric("Gaps", stats['gaps'], help="Queries not covered")
+                st.metric("❌ Gaps", stats['gaps'])
             
             # Coverage breakdown
             st.markdown("### 📋 Detailed Coverage")
@@ -917,23 +966,119 @@ Generated by YEA Query Fan-Out Tool
                     if item.get('improvement'):
                         st.markdown(f"**Improvement Suggestion:** {item['improvement']}")
     
-    # Tab 3: Results History (placeholder for future database integration)
+    # Tab 3: Full Data Export (NEW - like screenshot)
     with tabs[2]:
-        st.markdown("## 📈 Results History")
-        st.info("This feature will store your analysis history for tracking improvements over time. Coming soon!")
+        st.markdown("## 📋 Full Data Export")
         
-        if 'last_result' in st.session_state:
-            st.markdown("### Last Analysis")
-            st.markdown(f"**Query:** {st.session_state.get('last_query', 'N/A')}")
-            st.markdown(f"**Queries Generated:** {st.session_state['last_result']['total_count']}")
-            st.markdown(f"**Timestamp:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        if 'last_result' in st.session_state and st.session_state['last_result']['success']:
+            result = st.session_state['last_result']
+            queries = result['queries']
+            
+            # Create DataFrame
+            df = pd.DataFrame(queries)
+            
+            # Reorder columns for better display
+            column_order = ['query', 'type', 'intent', 'content_format', 'reasoning', 'priority']
+            available_columns = [col for col in column_order if col in df.columns]
+            df = df[available_columns]
+            
+            st.markdown("### 📁 Complete Query Data")
+            
+            # Display the dataframe (like the screenshot)
+            st.dataframe(
+                df,
+                use_container_width=True,
+                height=400,
+                column_config={
+                    "query": st.column_config.TextColumn("Query", width="large"),
+                    "type": st.column_config.TextColumn("Type", width="medium"),
+                    "intent": st.column_config.TextColumn("Intent", width="medium"),
+                    "content_format": st.column_config.TextColumn("Content Format", width="medium"),
+                    "reasoning": st.column_config.TextColumn("Reasoning", width="large"),
+                    "priority": st.column_config.TextColumn("Priority", width="small"),
+                }
+            )
+            
+            # Export options (like the screenshot)
+            st.markdown("### 📥 Export Options")
+            
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                csv = df.to_csv(index=False)
+                st.download_button(
+                    "📄 CSV",
+                    csv,
+                    f"fanout_queries_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    "text/csv",
+                    use_container_width=True
+                )
+            
+            with col2:
+                json_str = json.dumps(result, indent=2, ensure_ascii=False)
+                st.download_button(
+                    "📋 JSON",
+                    json_str,
+                    f"fanout_full_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                    "application/json",
+                    use_container_width=True
+                )
+            
+            with col3:
+                # Google Sheets format (simpler columns)
+                sheets_df = df[['query', 'intent', 'content_format', 'priority']].copy()
+                sheets_csv = sheets_df.to_csv(index=False)
+                st.download_button(
+                    "📊 Google Sheets",
+                    sheets_csv,
+                    f"fanout_sheets_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                    "text/csv",
+                    use_container_width=True
+                )
+            
+            # Summary statistics
+            st.markdown("### 📈 Summary Statistics")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                st.markdown("**By Query Type:**")
+                type_summary = df['type'].value_counts().to_frame()
+                type_summary.columns = ['Count']
+                st.dataframe(type_summary, use_container_width=True)
+            
+            with col2:
+                st.markdown("**By Content Format:**")
+                if 'content_format' in df.columns:
+                    format_summary = df['content_format'].value_counts().to_frame()
+                    format_summary.columns = ['Count']
+                    st.dataframe(format_summary, use_container_width=True)
+            
+            # AI Insights
+            if result.get('themes') or result.get('gaps') or result.get('count_reasoning'):
+                st.markdown("### 💡 AI Insights")
+                
+                if result.get('themes'):
+                    with st.expander("Key Themes"):
+                        st.markdown(result['themes'])
+                
+                if result.get('gaps'):
+                    with st.expander("Content Gaps"):
+                        st.markdown(result['gaps'])
+                
+                if result.get('count_reasoning'):
+                    with st.expander("Query Count Reasoning"):
+                        st.markdown(result['count_reasoning'])
+        
+        else:
+            st.info("👆 Generate queries first in the 'Query Fan-Out' tab to see and export data")
     
     # Footer
     st.markdown("---")
     st.markdown("""
     <div class="footer">
         <p><strong>YEA Query Fan-Out Tool</strong> | Built for AEO Optimization</p>
-        <p>Based on Google AI Mode Patents | Powered by Gemini 2.5 Pro</p>
+        <p>Based on Google AI Mode Patents | Powered by Gemini</p>
         <p>© 2024 YEA Business - Digital Marketing & Video Production</p>
     </div>
     """, unsafe_allow_html=True)
