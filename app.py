@@ -749,15 +749,6 @@ def main():
         
         Built by **YEA Business** for AEO services.
         """)
-        
-        st.markdown("---")
-        
-        st.markdown("### 🔗 Resources")
-        st.markdown("""
-        - [iPullRank AI Mode Guide](https://ipullrank.com/how-ai-mode-works)
-        - [Google Patent](https://patents.google.com/patent/WO2024064249A1)
-        - [WordLift Tool](https://wordlift.io/blog/en/query-fan-out-ai-search/)
-        """)
     
     # Main content area
     tabs = st.tabs(["🔍 Query Fan-Out", "📊 Content Analysis", "📋 Full Data Export"])
@@ -1079,7 +1070,7 @@ def main():
     <div class="footer">
         <p><strong>YEA Query Fan-Out Tool</strong> | Built for AEO Optimization</p>
         <p>Based on Google AI Mode Patents | Powered by Gemini</p>
-        <p>© 2024 YEA Business - Digital Marketing & Video Production</p>
+        <p>© 2025 YEA Business </p>
     </div>
     """, unsafe_allow_html=True)
 
